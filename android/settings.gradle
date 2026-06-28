@@ -32,6 +32,6 @@ plugins {
 
 include ':app'
 
-// 🔑 ده السطر الرسمي الصحيح اللي هيخلي فلاتر يحقن البلاجنز من غير ما يضرب الـ JSON
+// 🔑 المسار المظبوط بدون تكرار مجلد الـ android
 setBinding(new Binding([gradle: this]))
-evaluate(new File(settingsDir, "${settingsDir}/../.flutter-plugins-dependencies/settings_plugin_loader.groovy"))
+evaluate(new File(settingsDir, "../.flutter-plugins-dependencies/settings_plugin_loader.groovy"))
