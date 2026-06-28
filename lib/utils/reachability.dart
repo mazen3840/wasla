@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class Reachability extends Object {
   final Connectivity _connectivity = Connectivity();
-  StreamSubscription<ConnectivityResult>? connectivitySubscription;
+  StreamSubscription<List<ConnectivityResult>>? connectivitySubscription;
 
   // current network status
   String _connectStatus = 'Unknown';
@@ -20,12 +20,12 @@ class Reachability extends Object {
 
   static final Reachability _singleton = Reachability._internal();
   static final Reachability instance = _singleton;
+  
   Reachability._internal() {
     connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
-      _connectStatus = result.toString();
-      debugPrint("ConnectionStatus :: = $_connectStatus");
-    } as void Function(List<ConnectivityResult> event)?) as StreamSubscription<ConnectivityResult>?;
+        _connectivity.onConnectivityChanged.listen((List<ConnectivityResult> result) {
+      _updateConnectionStatus(result);
+    });
   }
 
   dispose() {
@@ -34,16 +34,24 @@ class Reachability extends Object {
 
   // set up initial
   Future<void> setUpConnectivity() async {
-    String connectionStatus;
-
     try {
-      connectionStatus = (await _connectivity.checkConnectivity()).toString();
-      debugPrint("ConnectionStatus :: => $connectionStatus");
+      final result = await _connectivity.checkConnectivity();
+      _updateConnectionStatus(result);
     } on Exception catch (e) {
       debugPrint(e.toString());
-      connectionStatus = 'Failed to get connectivity.';
+      _connectStatus = 'Failed to get connectivity.';
     }
-    _connectStatus = connectionStatus;
+  }
+
+  // Helper method to handle the new List format
+  void _updateConnectionStatus(List<ConnectivityResult> result) {
+    if (result.contains(ConnectivityResult.wifi)) {
+      _connectStatus = _connectivityWifi;
+    } else if (result.contains(ConnectivityResult.mobile)) {
+      _connectStatus = _connectivityMobile;
+    } else {
+      _connectStatus = result.isNotEmpty ? result.first.toString() : 'ConnectivityResult.none';
+    }
     debugPrint("ConnectionStatus :: => $_connectStatus");
   }
 
