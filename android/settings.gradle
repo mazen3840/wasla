@@ -1,4 +1,23 @@
 pluginManagement {
+    def flutterSdkPath = {
+        def properties = new Properties()
+        def propertiesFile = new File(settingsDir, "local.properties")
+        if (propertiesFile.exists()) {
+            propertiesFile.withReader("UTF-8") { reader -> properties.load(reader) }
+        }
+        def sdkPath = properties.getProperty("flutter.sdk")
+        if (sdkPath == null) {
+            sdkPath = System.getenv("FLUTTER_ROOT")
+        }
+        if (sdkPath == null) {
+            sdkPath = ""
+        }
+        return sdkPath
+    }();
+
+    // السطر ده هو اللي هيجيب البلجن من الـ SDK علطول بدون الحاجة لإنترنت أو رقم نسخة
+    includeBuild "${flutterSdkPath}/packages/flutter_tools/gradle"
+
     repositories {
         google()
         mavenCentral()
@@ -9,12 +28,12 @@ pluginManagement {
 plugins {
     id "com.android.application" version "8.1.0" apply false
     id "org.jetbrains.kotlin.android" version "1.8.22" apply false
-    id "dev.flutter.flutter-gradle-plugin" version "3.19.6" apply false
+    id "dev.flutter.flutter-gradle-plugin" apply false
 }
 
 include ':app'
 
-// ربط البلاجنز يدوي عشان نقفل الحوار ده تماماً
+// ربط البلاجنز يدويًا وبشكل مباشر من الكاش الخاص بالسيرفر لضمان تخطي السكربت المكسور
 include ':shared_preferences_android'
 project(':shared_preferences_android').projectDir = new File(settingsDir, '../.pub-cache/hosted/pub.dev/shared_preferences_android-2.2.2/android')
 
