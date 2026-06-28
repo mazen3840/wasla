@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 class AppConfig {
-  static String baseUrl = 'https://affiliate.coderz.online';
+  static String baseUrl = 'https://affiliate.coderz.online/';
   static String licenseKey = '12345678-1234-1234-1234-1234567890ab';
 
   static Future<void> load() async {
@@ -12,5 +12,3 @@ class AppConfig {
     licenseKey = data['license_key'];
   }
 }
-
-
