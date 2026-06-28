@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.affiliatepro.mobile" // اتأكد إن ده الباكيج نيم بتاعك الصح
+    namespace "com.mazen.wasla"
     compileSdk 34
 
     compileOptions {
@@ -45,11 +45,26 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.debug // أو إعدادات الـ release لو مصلحها
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            shrinkResources false
         }
     }
 }
 
 flutter {
     source '../..'
+}
+
+dependencies {
+    // ربط الـ Plugins يدويًا في الـ dependencies لضمان تجميعها داخل الـ APK
+    implementation project(':shared_preferences_android')
+    implementation project(':flutter_plugin_android_lifecycle')
+    implementation project(':share_plus')
+    implementation project(':sqflite')
+    implementation project(':package_info_plus')
+    implementation project(':url_launcher_android')
+    implementation project(':path_provider_android')
+    implementation project(':image_picker_android')
+    implementation project(':connectivity_plus')
 }
