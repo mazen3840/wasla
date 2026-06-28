@@ -15,8 +15,7 @@ pluginManagement {
         return sdkPath
     }();
 
-    // السطر ده هو اللي هيجيب البلجن من الـ SDK علطول بدون الحاجة لإنترنت أو رقم نسخة
-    includeBuild "${flutterSdkPath}/packages/flutter_tools/gradle"
+    includeBuild("${flutterSdkPath}/packages/flutter_tools/gradle")
 
     repositories {
         google()
@@ -26,37 +25,10 @@ pluginManagement {
 }
 
 plugins {
+    // 🔑 ده البلاجن السحري الرسمي اللي بيحل محل كل العك بتاع ربط البلاجنز
+    id "dev.flutter.flutter-plugin-loader" version "1.0.0"
     id "com.android.application" version "8.1.0" apply false
     id "org.jetbrains.kotlin.android" version "1.8.22" apply false
-    id "dev.flutter.flutter-gradle-plugin" apply false
 }
 
-include ':app'
-
-// ربط البلاجنز يدويًا وبشكل مباشر من الكاش الخاص بالسيرفر لضمان تخطي السكربت المكسور
-include ':shared_preferences_android'
-project(':shared_preferences_android').projectDir = new File(settingsDir, '../.pub-cache/hosted/pub.dev/shared_preferences_android-2.2.2/android')
-
-include ':flutter_plugin_android_lifecycle'
-project(':flutter_plugin_android_lifecycle').projectDir = new File(settingsDir, '../.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.19/android')
-
-include ':share_plus'
-project(':share_plus').projectDir = new File(settingsDir, '../.pub-cache/hosted/pub.dev/share_plus-7.2.2/android')
-
-include ':sqflite'
-project(':sqflite').projectDir = new File(settingsDir, '../.pub-cache/hosted/pub.dev/sqflite-2.3.3+1/android')
-
-include ':package_info_plus'
-project(':package_info_plus').projectDir = new File(settingsDir, '../.pub-cache/hosted/pub.dev/package_info_plus-4.2.0/android')
-
-include ':url_launcher_android'
-project(':url_launcher_android').projectDir = new File(settingsDir, '../.pub-cache/hosted/pub.dev/url_launcher_android-6.3.2/android')
-
-include ':path_provider_android'
-project(':path_provider_android').projectDir = new File(settingsDir, '../.pub-cache/hosted/pub.dev/path_provider_android-2.2.4/android')
-
-include ':image_picker_android'
-project(':image_picker_android').projectDir = new File(settingsDir, '../.pub-cache/hosted/pub.dev/image_picker_android-0.8.12+1/android')
-
-include ':connectivity_plus'
-project(':connectivity_plus').projectDir = new File(settingsDir, '../.pub-cache/hosted/pub.dev/connectivity_plus-4.0.2/android')
+include ":app"
