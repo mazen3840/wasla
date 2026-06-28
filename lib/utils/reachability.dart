@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class Reachability extends Object {
   final Connectivity _connectivity = Connectivity();
-  StreamSubscription<List<ConnectivityResult>>? connectivitySubscription;
+  StreamSubscription<ConnectivityResult>? connectivitySubscription;
 
   // current network status
   String _connectStatus = 'Unknown';
@@ -22,9 +22,11 @@ class Reachability extends Object {
   static final Reachability instance = _singleton;
   
   Reachability._internal() {
+    // شيلنا كل الـ Casting الغريب اللي كان موجود هنا
     connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen((List<ConnectivityResult> result) {
-      _updateConnectionStatus(result);
+        _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+      _connectStatus = result.toString();
+      debugPrint("ConnectionStatus :: = $_connectStatus");
     });
   }
 
@@ -34,24 +36,16 @@ class Reachability extends Object {
 
   // set up initial
   Future<void> setUpConnectivity() async {
+    String connectionStatus;
+
     try {
-      final result = await _connectivity.checkConnectivity();
-      _updateConnectionStatus(result);
+      connectionStatus = (await _connectivity.checkConnectivity()).toString();
+      debugPrint("ConnectionStatus :: => $connectionStatus");
     } on Exception catch (e) {
       debugPrint(e.toString());
-      _connectStatus = 'Failed to get connectivity.';
+      connectionStatus = 'Failed to get connectivity.';
     }
-  }
-
-  // Helper method to handle the new List format
-  void _updateConnectionStatus(List<ConnectivityResult> result) {
-    if (result.contains(ConnectivityResult.wifi)) {
-      _connectStatus = _connectivityWifi;
-    } else if (result.contains(ConnectivityResult.mobile)) {
-      _connectStatus = _connectivityMobile;
-    } else {
-      _connectStatus = result.isNotEmpty ? result.first.toString() : 'ConnectivityResult.none';
-    }
+    _connectStatus = connectionStatus;
     debugPrint("ConnectionStatus :: => $_connectStatus");
   }
 
