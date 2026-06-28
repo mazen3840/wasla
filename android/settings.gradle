@@ -1,9 +1,4 @@
 pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
     def flutterSdkPath = {
         def properties = new Properties()
         def propertiesFile = new File(settingsDir, "local.properties")
@@ -20,8 +15,12 @@ pluginManagement {
         return sdkPath
     }();
 
-    plugins {
-        id "dev.flutter.flutter-gradle-plugin" version "1.0.0" apply false
+    includeBuild "${flutterSdkPath}/packages/flutter_tools/gradle"
+
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
     }
 }
 
