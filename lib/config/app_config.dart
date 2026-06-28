@@ -12,3 +12,5 @@ class AppConfig {
     licenseKey = data['license_key'];
   }
 }
+
+
