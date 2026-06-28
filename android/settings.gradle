@@ -39,6 +39,3 @@ dependencyResolutionManagement {
 }
 
 include ':app'
-
-// 🔑 السطر المطلوب لربط البلاجنز تلقائياً (دا اللي ناقص عشان يلقط كل الـ Plugins)
-apply from: "${settingsDir}/../.flutter-plugins-dependencies"
