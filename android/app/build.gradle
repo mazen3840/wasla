@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.mazen.wasla" // اتأكد إن ده الباكيج نيم بتاعك الصح
+    namespace "com.affiliatepro.mobile" // اتأكد إن ده الباكيج نيم بتاعك الصح
     compileSdk 34
 
     compileOptions {
